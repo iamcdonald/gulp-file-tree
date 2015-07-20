@@ -83,6 +83,7 @@ describe('gulp-file-tree', function () {
 				emitTree: true,
 				transform: null,
 				emitFiles: true,
+				fileName: 'tree'
 			});
 
 			gft.on('data', function (file){
@@ -173,6 +174,50 @@ describe('gulp-file-tree', function () {
 
 				gulp.src('test/fixture/**/*')
 					.pipe(gft);
+			});
+		});
+
+		describe('fileName', function () {
+			it('emits only a single file with the same name as fileName option', function (done) {
+				var gft = gulpFileTree({
+					fileName: 'test'
+				}),
+					files = [];
+
+				gft.on('data', function (file) {
+					files.push(file);
+				});
+				gft.on('end', function () {
+					assert.equal(files[0].path, 'test.json');
+					done();
+				});
+
+				gulp.src('test/fixture/**/*')
+					.pipe(gft);
+			});
+
+			it('throws an error if fileName passed in is not of type \'string\'', function () {
+				assert.throws(function () {
+					var gft = gulpFileTree({
+							fileName: function(){}
+						});
+					gulp.src('test/fixture/**/*')
+						.pipe(gft);
+				}, TypeError, '\'fileName\' option must be of type \'string\'');
+				assert.throws(function () {
+					var gft = gulpFileTree({
+							fileName: 1245
+						});
+					gulp.src('test/fixture/**/*')
+						.pipe(gft);
+				}, TypeError, '\'fileName\' option must be of type \'string\'');
+				assert.throws(function () {
+					var gft = gulpFileTree({
+							fileName: {}
+						});
+					gulp.src('test/fixture/**/*')
+						.pipe(gft);
+				}, TypeError, '\'fileName\' option must be of type \'string\'');
 			});
 		});
 
