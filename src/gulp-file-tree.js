@@ -14,12 +14,17 @@ var GulpFileTree = function (opts) {
 
 	opts = objectMerge({
 		emitTree: true,
+		fileName: 'tree',
 		transform: null,
 		emitFiles: false
 	}, opts || {});
 
 	if (opts.transform && typeof opts.transform !== 'function') {
 		throw new TypeError('\'transform\' option must be of type \'function\'');
+	}
+
+	if (opts.fileName && typeof opts.fileName !== 'string') {
+		throw new TypeError('\'fileName\' option must be of type \'string\'');
 	}
 
 	fileTree = new FileTree(opts.transform);
@@ -36,7 +41,7 @@ var GulpFileTree = function (opts) {
 		gft.push(new File({
 			cwd: '',
 			base: '',
-			path: 'tree.json',
+			path: opts.fileName + '.json',
 			contents: new Buffer(JSON.stringify(tree, null, '\t'))
 		}));
 	}

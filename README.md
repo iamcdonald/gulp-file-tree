@@ -107,6 +107,11 @@ Type: `Boolean`
 
 Determines whether a json file containing the tree structure should be emitted.
 
+#### options.fileName (default: `tree`)
+Type: `String`
+
+The base filename that the json tree structure should be emitted as.
+
 #### options.emitFiles (default: `false`)
 Type: `Boolean`
 
